@@ -3,6 +3,7 @@
 #include "types.hpp"
 
 #include <cstdint>
+#include <algorithm>
 
 namespace ref
 {

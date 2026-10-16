@@ -30,54 +30,54 @@ namespace rvv
         return __riscv_vsetvl_e8m4(remaining);
     }
 
-    inline I32M4 LoadI32M4(const int* src, size_t vl)
+    inline I32M4 LoadI32M4(const int *src, size_t vl)
     {
         return __riscv_vle32_v_i32m4(src, vl);
     }
 
-    inline F32M4 LoadF32M4(const float* src, size_t vl)
+    inline F32M4 LoadF32M4(const float *src, size_t vl)
     {
         return __riscv_vle32_v_f32m4(src, vl);
     }
 
-    inline U8M4 LoadU8M4(const uint8_t* src, size_t vl)
+    inline U8M4 LoadU8M4(const uint8_t *src, size_t vl)
     {
         return __riscv_vle8_v_u8m4(src, vl);
     }
 
-    inline void StoreI32M4(int* dst, I32M4 values, size_t vl)
+    inline void StoreI32M4(int *dst, I32M4 values, size_t vl)
     {
         __riscv_vse32_v_i32m4(dst, values, vl);
     }
 
-    inline void StoreF32M4(float* dst, F32M4 values, size_t vl)
+    inline void StoreF32M4(float *dst, F32M4 values, size_t vl)
     {
         __riscv_vse32_v_f32m4(dst, values, vl);
     }
 
-    inline void StoreU8M4(uint8_t* dst, U8M4 values, size_t vl)
+    inline void StoreU8M4(uint8_t *dst, U8M4 values, size_t vl)
     {
         __riscv_vse8_v_u8m4(dst, values, vl);
     }
 
     // Load/store with a byte stride between consecutive lanes (e.g. every
     // other f32: stride = 2 * sizeof(float)).
-    inline F32M4 LoadStridedF32M4(const float* src, ptrdiff_t stride_bytes, size_t vl)
+    inline F32M4 LoadStridedF32M4(const float *src, ptrdiff_t stride_bytes, size_t vl)
     {
         return __riscv_vlse32_v_f32m4(src, stride_bytes, vl);
     }
 
-    inline I32M4 LoadStridedI32M4(const int* src, ptrdiff_t stride_bytes, size_t vl)
+    inline I32M4 LoadStridedI32M4(const int *src, ptrdiff_t stride_bytes, size_t vl)
     {
         return __riscv_vlse32_v_i32m4(src, stride_bytes, vl);
     }
 
-    inline void StoreStridedF32M4(float* dst, ptrdiff_t stride_bytes, F32M4 values, size_t vl)
+    inline void StoreStridedF32M4(float *dst, ptrdiff_t stride_bytes, F32M4 values, size_t vl)
     {
         __riscv_vsse32_v_f32m4(dst, stride_bytes, values, vl);
     }
 
-    inline void StoreStridedI32M4(int* dst, ptrdiff_t stride_bytes, I32M4 values, size_t vl)
+    inline void StoreStridedI32M4(int *dst, ptrdiff_t stride_bytes, I32M4 values, size_t vl)
     {
         __riscv_vsse32_v_i32m4(dst, stride_bytes, values, vl);
     }
@@ -93,7 +93,7 @@ namespace rvv
     }
 
     // Indexed load: lane i reads base[byte_offsets[i] / 4] as f32.
-    inline F32M4 GatherF32M4(const float* base, U32M4 byte_offsets, size_t vl)
+    inline F32M4 GatherF32M4(const float *base, U32M4 byte_offsets, size_t vl)
     {
         return __riscv_vluxei32_v_f32m4(base, byte_offsets, vl);
     }
@@ -129,7 +129,7 @@ namespace rvv
         return __riscv_vmv_v_x_u8m4(value, vl);
     }
 
-    inline void FillU8(uint8_t* dst, uint8_t value, size_t count)
+    inline void FillU8(uint8_t *dst, uint8_t value, size_t count)
     {
         size_t remaining = count;
         size_t offset = 0;
@@ -190,17 +190,17 @@ namespace rvv
         return __riscv_vsetvl_e32m2(remaining);
     }
 
-    inline F32M2 LoadF32M2(const float* src, size_t vl)
+    inline F32M2 LoadF32M2(const float *src, size_t vl)
     {
         return __riscv_vle32_v_f32m2(src, vl);
     }
 
-    inline U8Mf2 LoadU8Mf2(const uint8_t* src, size_t vl)
+    inline U8Mf2 LoadU8Mf2(const uint8_t *src, size_t vl)
     {
         return __riscv_vle8_v_u8mf2(src, vl);
     }
 
-    inline void StoreU8Mf2Masked(uint8_t* dst, U8Mf2 values, MaskF32M2 mask, size_t vl)
+    inline void StoreU8Mf2Masked(uint8_t *dst, U8Mf2 values, MaskF32M2 mask, size_t vl)
     {
         __riscv_vse8_v_u8mf2_m(mask, dst, values, vl);
     }
@@ -270,4 +270,40 @@ namespace rvv
     {
         return __riscv_vmerge_vvm_f32m2(when_false, when_true, mask, vl);
     }
+
+    inline MaskF32M2 MaskF32LessThanScalarM2(F32M2 values, float scalar, size_t vl)
+    {
+        return __riscv_vmflt_vf_f32m2_b16(values, scalar, vl);
+    }
+
+    inline MaskF32M2 MaskF32LessEqualScalarM2(F32M2 values, float scalar, size_t vl)
+    {
+        return __riscv_vmfle_vf_f32m2_b16(values, scalar, vl);
+    }
+
+    inline MaskF32M2 MaskF32GreaterEqualScalarM2(F32M2 values, float scalar, size_t vl)
+    {
+        return __riscv_vmfge_vf_f32m2_b16(values, scalar, vl);
+    }
+
+    inline F32M2 LoadStridedF32M2(const float *src, ptrdiff_t stride_bytes, size_t vl)
+    {
+        return __riscv_vlse32_v_f32m2(src, stride_bytes, vl);
+    }
+
+    inline F32M2 MaxF32M2(F32M2 left, F32M2 right, size_t vl)
+    {
+        return __riscv_vfmax_vv_f32m2(left, right, vl);
+    }
+
+    inline F32M2 MinF32M2(F32M2 left, F32M2 right, size_t vl)
+    {
+        return __riscv_vfmin_vv_f32m2(left, right, vl);
+    }
+
+    inline void StoreF32M2(float *dst, F32M2 values, size_t vl)
+    {
+        __riscv_vse32_v_f32m2(dst, values, vl);
+    }
+
 }
